@@ -2,7 +2,7 @@
 /**
  * Plugin Name: ALT LAB get posts shortcode
  * Plugin URI: https://github.com/woodwardtw/
- * Description: Shortcode to use JSON API to show posts from another site [get-posts="theurl.com" number="15"]
+ * Description: Shortcode to use JSON API to show posts from another site [get-posts url="theurl.com" number="15" display="list/grid"]
 
  * Version: 1.0
  * Author: Tom Woodward
@@ -39,9 +39,9 @@ add_action( 'wp_enqueue_scripts', 'altlab_getposts_enqueue_scripts' );
  
 function altlab_getpost_shortcode( $atts, $content = null ) {
     extract(shortcode_atts( array(
-         'url' => '', //author id - sep multiple w commas       
+         'url' => '', //base url      
          'display' => '', //defaults to list but grid with thumbnail featured images    
-         'number' => ''   
+         'number' => '',   
     ), $atts));         
 
     if($url){
@@ -50,7 +50,7 @@ function altlab_getpost_shortcode( $atts, $content = null ) {
     if($number){
         $num = 'data-num="'.$number.'"';
     } else {
-        $num = 'data-num="10"';
+        $num = 'data-num="15"';
     }
      if($display){
         $num = 'data-display="'.$display.'"';

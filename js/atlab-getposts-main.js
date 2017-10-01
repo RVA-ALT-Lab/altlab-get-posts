@@ -1,7 +1,7 @@
 
 function checkResourcePostsDiv(){
  
-//see if we've got an altlab-getposts div before running all this stuff
+//see if we've got an anth-posts div before running all this stuff
   try {
   var element = document.getElementById('altlab-getposts');
   console.log(element);
@@ -13,17 +13,16 @@ function checkResourcePostsDiv(){
 }
 
   if (checkResourcePostsDiv()){ 
-
   var element = document.getElementById('altlab-getposts');
-
+  var num = element.dataset.num;
     var url = sourceUrl();
    
-    console.log(url);//what's our url?
+    console.log(url);//what's our final url?
 
     jQuery(document).ready(function() {
       var def = new jQuery.Deferred();
       jQuery.ajax({
-        url: url + '/wp-json/wp/v2/posts?'+ getResourceRestrictions(), //add the restrictions
+        url: url + '/wp-json/wp/v2/posts/?per_page='+num,
         jsonp: "cb",
         dataType: 'json',
         success: function(data) {
@@ -50,7 +49,7 @@ function sourceUrl(){
 
 //sets the background image based on the featured image or returns a default image
     function resourceBackgroundImg (item) {
-    var element = document.getElementById('altlab-getposts'); 
+    var element = document.getElementById('anth-resource'); 
       if(element.dataset.display == 'grid'){
       try {
        var imgUrl = item._embedded['wp:featuredmedia'][0].media_details.sizes.medium.source_url;
@@ -70,6 +69,7 @@ function resourceUrl(item){
     function dateDisplay(item){
       return item.date.substring(5,10);
     }
+
     
 
     var $loading = jQuery('#loading').hide();
@@ -83,10 +83,11 @@ function resourceUrl(item){
 
 }
 
+console.log('fish');
 
 //get the category restriction in data-cats or data-authors if either or both exists
 function getResourceRestrictions(){
-    var element = document.getElementById('altlab-getposts'); 
+    var element = document.getElementById('anth-resource'); 
     if(element.dataset.cats){
       var cats = '&categories='+element.dataset.cats;
     } else {
@@ -97,10 +98,5 @@ function getResourceRestrictions(){
     }else {
       authors = "";
     }
-    if(element.dataset.num){
-      var num = '&per_page='+element.dataset.num;
-    } else {
-      num = "&per_page=10";
-    }
-    return cats + authors + num;
+    return cats + authors;
 }  
